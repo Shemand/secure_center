@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Starter Template · Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='libs/css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/bootstrap-reboot.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/bootstrap-grid.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/tabulator.min.css') }}">
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="{{ url_for('index.main') }}">Secure Center</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('index.main') }}">Компьютеры<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('devices.index') }}">Устройства</a>
+          </li>
+          {% if isAdmin %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('admin.index') }}">Панель администратора</a>
+          </li>
+<!--          <li class="nav-item dropdown">-->
+<!--            <a class="nav-link dropdown-toggle" href="{{ url_for('admin.index') }}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Панель администратора</a>-->
+<!--            <div class="dropdown-menu" aria-labelledby="dropdown01">-->
+<!--              <a class="dropdown-item" href="{{ url_for('admin.index') }}">Управление</a>-->
+<!--              <a class="dropdown-item" href="{{ url_for('admin.index') }}">Логи</a>-->
+<!--            </div>-->
+<!--          </li>-->
+          {% endif %}
+        </ul>
+        <ul class="nav px-3">
+          <span class="nav-link text-white-50">Вы авторизированны как {{ username }}</span>
+          <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/logout">Выйти из системы</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </main>
+  </body>
+  <script src="{{ url_for('static', filename='libs/js/jquery-3.5.1.slim.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='libs/js/bootstrap.bundle.js') }}"></script>
+</html>

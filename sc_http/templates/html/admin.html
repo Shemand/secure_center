@@ -1,0 +1,20 @@
+{% extends "html/base/admin.html" %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Логи: </h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="container-fluid" id="logs"></div>
+    </div>
+    <div class="col-sm-4">
+      <div class="container-fluid">
+        <div class="row p-1"><button type="button" class="btn btn-primary btn-lg" id="send_update_statistic">Обновить статистику</button></div>
+        <div class="row p-1"><button type="button" class="btn btn-primary btn-lg" id="send_update_blocklist">Обновить выгрузку</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

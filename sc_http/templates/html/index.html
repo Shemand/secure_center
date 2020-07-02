@@ -1,0 +1,113 @@
+{% extends "html/base/main.html" %}
+{% block content %}
+<div class="container-fluid center_block">
+     <div class="row">
+         <div class="col-sm-10">
+                <div id="macroses_block" hidden>
+                    <input type="button" value="Без агента касперского" id="mc_without_agent"><input type="button" value="Без защиты касперского" id="mc_without_security"><input type="button" value="Без Dallas Lock" id="mc_without_dl"><input type="button" value="Проблемный Dallas Lock" id="mc_problems_dl"><input type="button" value="Проблемный касперский" id="mc_problems_kl"><input type="button" value="Не в домене" id="mc_without_domain">
+                </div>
+                <div id="filter_block" hidden>
+                    <div id="DL_options">
+                        <span>Даллас лок</span>
+                        <div>
+                            <div class="opt"><input type="checkbox" value="" id="is_good_dl"><label for="">Убрать рабочие Dallas Lock машины</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_without_dl"><label for="">Убрать машины без Dallas Lock</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_error_dl"><label for="">Убрать машины с Dallas Lock, но с ошибкой</label></div>
+                        </div>
+                    </div>
+                    <div id="KL_options">
+                        <span>Касперский</span>
+                        <div>
+                            <div class="opt"><input type="checkbox" value="" id="is_good_agent"><label for="">Убрать машины с правильными агентами Касперского</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_good_security"><label for="">Убрать машины с правильной защитой Касперского</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_without_agent"><label for="">Убрать машины без агента Касперского</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_without_security"><label for="">Убрать машины без защиты Касперского</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_error_agent"><label for="">Убрать машины с не сертифицированной версией агента Касперского</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_error_security"><label for="">Убрать машины с не сертифицированной версией защиты Касперского</label></div>
+                            <div class="opt"><input type="checkbox" value="" id="is_check_version"><label for="">Включить проверку совпадения версий Агента и Защиты Касперского</label></div>
+                        </div>
+                    </div>
+                    <div id="OS_options">
+                        <span>Операционная система</span>
+                        <div class="opt"><input type="checkbox" value="" id="is_linux"><label for="">Убрать машины под управлением ОС Linux</label></div>
+                        <div class="opt"><input type="checkbox" value="" id="is_windows"><label for="">Убрать машины под управлением ОС Windows</label></div>
+                        <div class="opt"><input type="checkbox" value="" id="is_unknown"><label for="">Убрать машины с неизвестной операционной системой</label></div>
+                    </div>
+                    <div id="Domain_options">
+                        <span>Домен</span>
+                        <div class="opt"><input type="checkbox" value="" id="is_inDomain"><label for="">Убрать машины в домене</label></div>
+                        <div class="opt"><input type="checkbox" value="" id="is_notDomain"><label for="">Убрать машины не в домене</label></div>
+                    </div>
+                    <div id="Logon_options">
+                        <span>Последние появляние в сети</span>
+                        <div class="opt"><input type="radio" id="is_LogMoreOff" name="LogMore" checked><label for="">Отключить проверку на "не логинились более..."</label></div>
+                        <div class="opt"><input type="radio" id="is_LogMore3m" name="LogMore"><label for="">Убрать машины, которые не логинились более 3 месяцев</label></div>
+                        <div class="opt"><input type="radio" id="is_LogMore2m" name="LogMore"><label for="">Убрать машины, которые не логинились более 2 месяцев</label></div>
+                        <div class="opt"><input type="radio" id="is_LogMore1m" name="LogMore"><label for="">Убрать машины, которые не логинились более месяца</label></div>
+                        <div class="opt"><input type="radio" id="is_LogLessOff" name="LogLess" checked><label for="">Отключить проверку на "логинились последние..."</label></div>
+                        <div class="opt"><input type="radio" id="is_LogLess3m" name="LogLess"><label for="">Убрать машины, которые логинились последние 3 месяца</label></div>
+                        <div class="opt"><input type="radio" id="is_LogLess2m" name="LogLess"><label for="">Убрать машины, которые логинились последние 2 месяца</label></div>
+                        <div class="opt"><input type="radio" id="is_LogLess1m" name="LogLess"><label for="">Убрать машины, которые логинились в течении месяца</label></div>
+                    </div>
+                    <div id="Other_options">
+                        <span>Прочее</span>
+                        <div class="opt"><input type="checkbox" value="" id="is_klIP"><label for="">Убрать машины, без IP адреса</label></div>
+                    </div>
+                    <div><input type="button" value="Применить фильтр" id="set_filter"></div>
+                </div>
+                <div id="filter_status" hidden>Сейчас не примененно ни одного фильтра</div>
+                <div id="table"></div>
+         </div>
+         <div class="col-sm-2">
+             <table id="stat">
+                <tr id="stat_all">
+                    <td>Всего компьютеров: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_domain">
+                    <td>Компьютеров в домене: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_dl">
+                    <td>С установленным Dallas Lock: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_agent">
+                    <td>С установленным агентов: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_security">
+                    <td>С установленной защитой: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_windows">
+                    <td>Под управлением Windows: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_linux">
+                    <td>Под управлением Linux: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+                <tr id="stat_unknown_os">
+                    <td>Неизвестна ОС: </td>
+                    <td class="stat_value">0</td>
+                </tr>
+            </table>
+            <div id="control_panel">
+                <input class="btn btn-primary btn-md control_buttons" type="button" value="Открыть фильтр" id="open_filters">
+                <input class="btn btn-primary btn-md control_buttons" type="button" value="Открыть макросы" id="open_macroses">
+                <input class="btn btn-primary btn-md control_buttons" type="button" value="Активно 0 фильтров" id="filter_status_bar">
+                <input class="btn btn-primary btn-md control_buttons" type="button" value="Очистить фильтры" id="clear_filter">
+                <br>
+                <span id="outer_last_updated">Последние обновление было произведенно: <span id="inner_last_updated"></span></span>
+            </div>
+            <input type="button" id="download" value="Скачать таблицу в формате XLSX" class="btn btn-primary btn-lg">
+         </div>
+     </div>
+</div>
+<script src="{{ url_for('static', filename='libs/js/xlsx.full.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/js/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/js/tabulator.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/js/axios.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}

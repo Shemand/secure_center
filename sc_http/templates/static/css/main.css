@@ -1,0 +1,74 @@
+.shirina {
+    width: 100%;
+}
+
+.center_block {
+    background-color: #f8f9fa !important;
+    margin: auto;
+    padding: 100px;
+}
+
+.statistic-column {
+    padding: 0px 30px;
+    border: 1px black solid;
+}
+
+.statistic-head {
+    font-size: 30px;
+}
+
+.statistic-header {
+    background-color: aqua;
+}
+
+.statistic-data {
+    background-color: white;
+}
+
+#DL_options input, #KL_options input, #OS_options input {
+
+}
+
+#DL_options span, #KL_options span, #OS_options span, #Other_options span,
+#Domain_options span, #Logon_options span {
+    font-size: 16px;
+    font-weight: 1000;
+}
+
+.opt {
+    display: block;
+    margin-left: 3em;
+}
+
+.opt label {
+    margin-left: 5px;
+}
+
+#search_block span {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#stat {
+    background-color: #f8f9fa;
+    padding: 50px;
+    z-index: 1000;
+}
+
+#logs {
+    height: 300px;
+    border: 1px solid black;
+    overflow-y: auto;
+}
+
+#logs span {
+    margin-left: 10px;
+}
+
+.block_item {
+    width:30px;
+}
+
+.control_buttons {
+    margin: 10px 10px 10px 0px;
+}

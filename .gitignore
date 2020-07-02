@@ -1,0 +1,10 @@
+venv/
+instance/
+dallas-001.txt
+dallas-002.txt
+dallas-TERO.txt
+dallas-vch.txt
+crypto_gateways.txt
+block.txt
+.idea/
+*.pyc

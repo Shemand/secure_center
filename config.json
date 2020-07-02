@@ -1,0 +1,252 @@
+{
+  "root" : "SZO",
+  "dallas_path" : [
+    "/home/shemand/projects/SC/dallas-001.txt",
+    "/home/shemand/projects/SC/dallas-002.txt",
+    "/home/shemand/projects/SC/dallas-vch.txt",
+    "/home/shemand/projects/SC/dallas-TERO.txt"
+  ],
+  "ignore_containers": ["6899", "6931"],
+  "locations" : [
+    {
+      "name" : "2659",
+      "dallas" : "2659",
+      "ad" : "2659"
+    },
+    {
+      "name" : "3526",
+      "dallas" : "3526",
+      "ad" : "3526"
+    },
+    {
+      "name": "3644",
+      "dallas": "3644",
+      "ad": "3644"
+    },
+    {
+      "name" : "3693",
+      "dallas" : "3693",
+      "ad" : "3693"
+    },
+    {
+      "name" : "3705",
+      "dallas" : "3705",
+      "ad" : "3705"
+    },
+    {
+      "name" : "3727",
+      "dallas" : "3727",
+      "ad" : "3727"
+    },
+    {
+      "name" : "3798",
+      "dallas" : "3798",
+      "ad" : "3798"
+    },
+    {
+      "name" : "5134",
+      "dallas" : "5134",
+      "ad" : "5134"
+    },
+    {
+      "name" : "5134",
+      "dallas" : "5134",
+      "ad" : "5134"
+    },
+    {
+      "name" : "5402",
+      "dallas" : "5402",
+      "ad" : "5402"
+    },
+    {
+      "name" : "5565",
+      "dallas" : "5565",
+      "ad" : "5565"
+    },
+    {
+      "name" : "6716",
+      "dallas" : "6716",
+      "ad" : "6716"
+    },
+    {
+      "name" : "6717",
+      "dallas" : "6717",
+      "ad" : "6717"
+    },
+    {
+      "name" : "6821",
+      "dallas" : "6821",
+      "ad" : "6821"
+    },
+    {
+      "name" : "6832",
+      "dallas" : "6832",
+      "ad" : "6832"
+    },
+        {
+      "name" : "6944",
+      "dallas" : "6944",
+      "ad" : "6944"
+    },
+    {
+      "name" : "T210",
+      "dallas" : "T210",
+      "ad" : "T210"
+    },
+    {
+      "name" : "T210",
+      "dallas" : "ОВО 210",
+      "ad" : "T210"
+    },
+    {
+      "name" : "T210",
+      "dallas" : "Упр 210",
+      "ad" : "T210"
+    },
+    {
+      "name" : "T211",
+      "dallas" : "T211",
+      "ad" : "T211"
+    },
+    {
+      "name" : "T211",
+      "dallas" : "ОВО 211",
+      "ad" : "T211"
+    },
+    {
+      "name" : "T211",
+      "dallas" : "Упр 211",
+      "ad" : "T211"
+    },
+    {
+      "name" : "T229",
+      "dallas" : "T229",
+      "ad" : "T229"
+    },
+    {
+      "name" : "T229",
+      "dallas" : "ОВО 229",
+      "ad" : "T229"
+    },
+    {
+      "name" : "T229",
+      "dallas" : "Упр 229",
+      "ad" : "T229"
+    },
+    {
+      "name" : "T235",
+      "dallas" : "T235",
+      "ad" : "T235"
+    },
+    {
+      "name" : "T239",
+      "dallas" : "T239",
+      "ad" : "T239"
+    },
+    {
+      "name" : "T239",
+      "dallas" : "ОВО 239",
+      "ad" : "T239"
+    },
+    {
+      "name" : "T239",
+      "dallas" : "Упр 239",
+      "ad" : "T239"
+    },
+    {
+      "name" : "T251",
+      "dallas" : "T251",
+      "ad" : "T251"
+    },
+    {
+      "name" : "T251",
+      "dallas" : "ОВО 251",
+      "ad" : "T251"
+    },
+    {
+      "name" : "T251",
+      "dallas" : "Упр 251",
+      "ad" : "T251"
+    },
+    {
+      "name" : "T253",
+      "dallas" : "T253",
+      "ad" : "T253"
+    },
+    {
+      "name" : "T253",
+      "dallas" : "ОВО 253",
+      "ad" : "T253"
+    },
+    {
+      "name" : "T253",
+      "dallas" : "Упр 253",
+      "ad" : "T253"
+    },
+    {
+      "name" : "T260",
+      "dallas" : "T260",
+      "ad" : "T260"
+    },
+    {
+      "name" : "T260",
+      "dallas" : "ОВО 260",
+      "ad" : "T260"
+    },
+    {
+      "name" : "T260",
+      "dallas" : "Упр 260",
+      "ad" : "T260"
+    },
+    {
+      "name" : "T278",
+      "dallas" : "T278",
+      "ad" : "T278"
+    },
+    {
+      "name" : "T278",
+      "dallas" : "ОВО 278",
+      "ad" : "T278"
+    },
+    {
+      "name" : "T278",
+      "dallas" : "Упр 278",
+      "ad" : "T278"
+    },
+    {
+      "name" : "T283",
+      "dallas" : "T283",
+      "ad" : "T283"
+    },
+    {
+      "name" : "T283",
+      "dallas" : "Т283",
+      "ad" : "T283"
+    },
+    {
+      "name" : "T283",
+      "dallas" : "ОВО 283",
+      "ad" : "T283"
+    },
+    {
+      "name" : "T283",
+      "dallas" : "Упр 283",
+      "ad" : "T283"
+    },
+    {
+      "name" : "upr",
+      "dallas" : "SZO",
+      "ad" : "upr2"
+    },
+    {
+      "name" : "upr",
+      "dallas" : "SZO",
+      "ad" : "upr"
+    },
+    {
+      "name" : "upr",
+      "dallas" : "SZO",
+      "ad" : "upr-varshavskaya"
+    }
+  ]
+}
