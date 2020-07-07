@@ -1,6 +1,5 @@
 from sc_databases.Database import BaseModel
-from sqlalchemy import String, Boolean
-from sqlalchemy.testing.schema import Column
+from sqlalchemy import String, Boolean, Column
 
 
 class Operation_System(BaseModel):

@@ -1,6 +1,5 @@
 from sc_databases.Database import BaseModel
-from sqlalchemy import Integer, ForeignKey
-from sqlalchemy.testing.schema import Column
+from sqlalchemy import Integer, ForeignKey, Column
 
 
 class ARMs_and_Patches(BaseModel):

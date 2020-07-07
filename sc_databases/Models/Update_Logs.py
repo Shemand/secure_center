@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from sc_databases.Database import BaseModel
-from sqlalchemy import Integer, Text, DateTime
-from sqlalchemy.testing.schema import Column
+from sqlalchemy import Integer, Text, DateTime, Column
 
 
 class Update_Logs(BaseModel):

@@ -1,6 +1,11 @@
+from datetime import datetime
+
+from sqlalchemy.orm import relationship
+
 from sc_databases.Database import BaseModel
-from sqlalchemy import Integer, String, Boolean, Text, DateTime, ForeignKey, Date
-from sqlalchemy.testing.schema import Column
+from sqlalchemy import Integer, String, Boolean, Text, DateTime, ForeignKey, Date, Column
+
+from sc_databases.Models.Kaspersky_Info import Kaspersky_Info
 
 
 class ARMs(BaseModel):
@@ -17,6 +22,11 @@ class ARMs(BaseModel):
     comment = Column(Text)
     Dallas_Servers_id = Column(Integer, ForeignKey('Dallas_Servers.id'))
     Structures_id = Column(Integer, ForeignKey('Structures.id'), nullable=False)
+
+    kaspersky = relationship(Kaspersky_Info, lazy='dynamic')
+
+    def actual_kaspersky(self):
+        return self.kaspersky.order_by(Kaspersky_Info.created.desc()).first()
 
     def __repr__(self):
         return "<ARMs (name: %r)>" % (self.name)

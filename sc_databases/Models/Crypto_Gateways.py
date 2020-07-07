@@ -1,7 +1,6 @@
 from sc_databases.Database import BaseModel
-from sqlalchemy import Integer, String, Boolean, Text
+from sqlalchemy import Integer, String, Boolean, Text, Column, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.testing.schema import Column
 
 
 class Crypto_Gateways(BaseModel):
@@ -13,9 +12,9 @@ class Crypto_Gateways(BaseModel):
     mask = Column(Integer, nullable=False)
     caption = Column(Text, nullable=False)
     active_to_block = Column(Boolean, nullable=False)
-    Structures_id = Column(Integer, nullable=False)
+    Structures_id = Column(Integer, ForeignKey('Structures.id'), nullable=False)
 
-    Structure = relationship("Structures", backref="crypto_gateways")
+    structure = relationship("Structures", backref="crypto_gateways")
 
     def __repr__(self):
         return "<Crypto_Gateways (name: %r, network: %r/%r)>" % (self.name, self.address, self.mask)

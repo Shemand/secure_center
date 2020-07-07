@@ -6,7 +6,7 @@ class System(BaseModel):
     __tablename__ = "System"
 
     id = Column(Integer, primary_key=True, nullable=False, unique=True, auto_increment=True)
-    parameter = Column(String, nullable=False, unique=True)
+    parameter = Column(String(32), nullable=False, unique=True)
     type = Column(Integer, nullable=False)
     value = Column(Text)
 

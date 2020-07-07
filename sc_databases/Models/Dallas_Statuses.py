@@ -1,7 +1,6 @@
 from sc_databases.Database import BaseModel
-from sqlalchemy import Integer, DateTime, ForeignKey
+from sqlalchemy import Integer, DateTime, ForeignKey, Column
 from sqlalchemy.orm import relationship
-from sqlalchemy.testing.schema import Column
 
 
 class Dallas_Statuses(BaseModel):

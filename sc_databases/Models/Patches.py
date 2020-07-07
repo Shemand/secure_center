@@ -1,6 +1,5 @@
 from sc_databases.Database import BaseModel
-from sqlalchemy import Integer, String
-from sqlalchemy.testing.schema import Column
+from sqlalchemy import Integer, String, Column
 
 
 class Patches(BaseModel):
