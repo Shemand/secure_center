@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from sc_databases.Database import BaseModel
 from sqlalchemy import Integer, String, Boolean, Text, DateTime, ForeignKey, Date, Column
 
+from sc_databases.Models.Dallas_Statuses import Dallas_Statuses
 from sc_databases.Models.Kaspersky_Info import Kaspersky_Info
 
 
@@ -20,13 +21,20 @@ class ARMs(BaseModel):
     isActive = Column(Boolean, nullable=False, default=1)
     isDeleted = Column(DateTime)
     comment = Column(Text)
-    Dallas_Servers_id = Column(Integer, ForeignKey('Dallas_Servers.id'))
     Structures_id = Column(Integer, ForeignKey('Structures.id'), nullable=False)
 
     kaspersky = relationship(Kaspersky_Info, lazy='dynamic')
+    dallas = relationship(Dallas_Statuses, lazy="dynamic")
+
+    TYPE_ARM = 1
+    TYPE_SERVER = 2
+    TYPES = [TYPE_ARM, TYPE_SERVER]
 
     def actual_kaspersky(self):
         return self.kaspersky.order_by(Kaspersky_Info.created.desc()).first()
+
+    def actual_dallas(self):
+        return self.dallas.order_by(Dallas_Statuses.created.desc()).first()
 
     def __repr__(self):
         return "<ARMs (name: %r)>" % (self.name)

@@ -38,5 +38,3 @@ class DatabaseClass(object):
 
     def cancel_changes(self):
         self.session.rollback()
-
-Database = DatabaseClass()

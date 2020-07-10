@@ -68,7 +68,7 @@ def __attach_kl(_computer, _row):
         database.ARMs.change_kl_info(_row, _computer.get_kl_info())
     else:
         last_record = database.KSC_info.get_last(_computer.get_name())
-        if _computer.isKaspersky_updated() and last_record:
+        if _computer.isKaspersky_updated() and last_record and (last_record['agent_version'] or last_record['security_version']):
             _computer.kl_ksc_server = last_record['server']
             _computer.kl_ip = last_record['ip']
             _computer.kl_os = last_record['server']

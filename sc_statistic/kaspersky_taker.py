@@ -202,6 +202,8 @@ class KSC_server:
             trd.setDaemon(True)
             trd.start()
         self.queue.join()
+        for adapter in self.session.adapters.values():
+            adapter.close()
 
     def attach_computer(self, computer):
 
