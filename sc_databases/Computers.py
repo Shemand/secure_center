@@ -38,7 +38,7 @@ class Computers:
         if not name:
             return self.__computers
         else:
-            if self.__computers[name]:
+            if name in self.__computers:
                 return self.__computers[name]
         return None
 
@@ -68,6 +68,9 @@ class Computers:
     # }
 
     def add (self, name, Structures_id=None, Structures_name=None, **kwargs):
+        name = name.upper()
+        if name.find('\\') != -1:
+            name = name[0:name.find('\\')]
         if not name in self.__computers:
             if Structures_id or Structures_name:
                 if Structures_id:

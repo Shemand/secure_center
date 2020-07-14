@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, date
+import datetime as datetimeClass
 
 from sqlalchemy.orm import relationship
 
@@ -35,6 +36,21 @@ class ARMs(BaseModel):
 
     def actual_dallas(self):
         return self.dallas.order_by(Dallas_Statuses.created.desc()).first()
+
+    def update_last_visible(self, dt):
+        if type(dt) == datetimeClass.date:
+            dt = datetime.combine(dt, datetime.min.time())
+        if type (self.last_visible) == datetimeClass.date:
+            self.last_visible = datetime.combine (self.last_visible, datetime.min.time ())
+        if isinstance(dt, datetime):
+            lv = self.last_visible
+            if lv is not None:
+                if lv < dt:
+                    self.last_visible = dt
+                    return True
+            else:
+                self.last_visible = dt
+        return False
 
     def __repr__(self):
         return "<ARMs (name: %r)>" % (self.name)
