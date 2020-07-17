@@ -11,9 +11,12 @@ from requests import ReadTimeout, ConnectTimeout
 from requests.adapters import HTTPAdapter
 from queue import Queue
 
-from sc_databases import db as database
+
+from sc_databases.Computers import Computers
 
 from urllib3.exceptions import MaxRetryError, NewConnectionError
+
+from sc_databases.Database import DatabaseClass
 
 
 class KSC_server:
@@ -26,6 +29,10 @@ class KSC_server:
         self.local.accessor = None
         self.session = requests.Session()
         self.computer_records = {}
+
+        self.computers = Computers()
+        self.db = DatabaseClass()
+
         adapter = HTTPAdapter(pool_maxsize=100, pool_connections=100)
         self.session.mount("https://", adapter)
         self.session.mount("http://", adapter)
@@ -121,41 +128,41 @@ class KSC_server:
             response = self.session.post(url=self.get_url('create_connection'), headers=self.auth_headers, data="{}",
                                          verify=False, timeout=30)
             if response.status_code == 401:
-                database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+                # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
                 print(
                     "[ERROR] (" + self.local.current_server + ") Authentication required. Check the policies or privileges of account!")
                 return None
         except ReadTimeout:
-            database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+            # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
             print("thread of connection to " + self.get_url(
                 'create_connection') + " (" + self.local.current_server + ") ended with timeout")
             return None
         except ConnectTimeout:
-            database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+            # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
             print("thread of connection to " + self.get_url(
                 'create_connection') + " (" + self.local.current_server + ") ended with max retries exceeded (perhaps no privileges)")
             return None
         except requests.exceptions.ConnectionError:
-            database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+            # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
             print("thread of connection to " + self.get_url(
                 'create_connection') + " (" + self.local.current_server + ") ended with max retries exceeded (perhaps no privileges)")
             return None
         except MaxRetryError:
-            database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+            # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
             print("thread of connection to " + self.get_url(
                 'create_connection') + " (" + self.local.current_server + ") ended with max retries exceeded (perhaps no privileges)")
             return None
         except NewConnectionError as Err:
             if Err.errno == 113:
-                database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+                # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
                 print("thread of connection to " + self.get_url(
                     'create_connection') + " (" + self.local.current_server + ") ended with error 'No route to host'")
             else:
-                database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
+                # database.Logs.add_update_logs("Data of " + self.local.current_server + " wasn't took")
                 print("While connection to " + self.get_url(
                     'create_connection') + " with error 'NewConnectionError' (errno not a 113)")
             return None
-        database.Logs.add_update_logs("Data of " + self.local.current_server + " was took done")
+        # database.Logs.add_update_logs("Data of " + self.local.current_server + " was took done")
         print("connection created: " + self.local.current_server + " - status is - " + str(response.status_code))
         return response.status_code
 
@@ -303,8 +310,6 @@ class KSC_server:
         def zip_data(records):
             data = {}
             for record in records:
-                if record['value']["KLHST_WKS_DN"].upper() == "SZO-TOPO-1080":
-                    print('ff')
                 data[ record['value']["KLHST_WKS_DN"].upper() ] = {
                     "server" : self.local.current_server,
                     "hasDuplicate" : False,
@@ -343,5 +348,26 @@ class KSC_server:
             print(str(data['bFinalized']) + " : " + str(data['bSuccededFinalized']))
         print(response)
         return None
+
+    def update_statistic(self):
+        self.update_computer_records()
+        for computername in self.computer_records:
+            if computername == 'T253-A5-01':
+                print('ff')
+            record = self.computer_records[computername]
+            computer = self.computers.get(computername)
+            if not computer and record['dns_name'] != "":
+                computer = self.computers.get(record['dns_name'])
+            if computer:
+                computer.update_kaspersky(self.db.session
+                                         , server = record['server']
+                                         , agent_version = record['agent_version']
+                                         , security_version = record['security_version']
+                                         , hasDuplicate = record['hasDuplicate']
+                                         , ip = record['ip']
+                                         , os = record['os']
+                                         )
+                computer.update_last_visible(record['started'])
+        self.db.session.commit()
 
 KSC = KSC_server()

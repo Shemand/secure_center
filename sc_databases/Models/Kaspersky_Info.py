@@ -22,13 +22,15 @@ class Kaspersky_Info(BaseModel):
     Address = relationship("Addresses", backref="kaspersky")
 
     def __eq__(self, other):
+        if self.ARMs_id == 1475:
+            print('ff')
         if isinstance(other, Kaspersky_Info):
             if self.server == other.server \
                     and self.agent_version == other.agent_version \
                     and self.security_version == other.security_version \
                     and self.hasDuplicate == other.hasDuplicate \
                     and (self.ARMs_id == other.ARMs_id or self.ARM.name == other.ARM.name) \
-                    and (self.Addresses_ip == other.Addresses_ip or self.Address == other.Address) \
+                    and (self.Addresses_ip == other.Addresses_ip or self.Address.ip == other.Address.ip if self.Address is not None else False) \
                     and self.Operation_System_name == other.Operation_System_name:
                 return True
         return False

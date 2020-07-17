@@ -1,7 +1,6 @@
 import sys
 import threading
 
-from sc_cus import cryptoGateways as CG, load_crypto_gateways, CryptoGateways
 from sc_statistic.updaters import update_database
 from sc_statistic.kaspersky_taker import KSC
 from sc_statistic.AD_taker import ActiveDirectory
@@ -9,9 +8,6 @@ from sc_statistic.Config import config
 from sc_databases.LinuxDatabase import LinuxComputers
 from sc_databases.WindowsDatabase import WindowsComputers
 from sc_statistic.Dallas_taker import DallasServer
-from sc_cus import cryptoGateways as CG
-
-from sc_databases import db as database
 
 
 def linux_taker(_computers):

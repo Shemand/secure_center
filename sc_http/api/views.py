@@ -6,7 +6,6 @@ from flask import Blueprint, jsonify, session, request
 
 from sc_http.common.functions import tangle_session, get_computers_by_root, computer_isAccess, device_isAccess
 from sc_http.common.decorators import requires_auth, requires_be_admin
-from sc_databases import db as database
 from sc_statistic import update_statistics as upd_stat
 
 mod = Blueprint('api', __name__, url_prefix='/api/')

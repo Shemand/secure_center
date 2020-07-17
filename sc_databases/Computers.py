@@ -81,7 +81,7 @@ class Computers:
                     print ('Computers.add not found in datebase. Computer wasn\'t added')
                     return None
                 kasper = None
-                dallas=None
+                dallas = None
                 struct_id = struct.id
                 registred_ad = kwargs['registred_ad'] if 'registred_ad' in kwargs else None
                 last_visible = kwargs['last_visible'] if 'last_visible' in kwargs else None
@@ -124,38 +124,6 @@ class Computers:
                 print ('Computers.add must take params of Structures_id or Structures_name')
                 return None
         return None
-
-    def update_kaspersky(self, server, **kwargs):
-        ARMs_name = None
-        if "ARM" in kwargs and isinstance (kwargs['ARM'], ARMs):
-            ARMs_name = kwargs['ARM'].name
-        elif 'ARMs_name' in kwargs:
-            ARMs_name = kwargs['ARMs_name']
-        else:
-            print(Computers.update_kaspersky())
-            return None
-        if "ARM" in kwargs and isinstance(kwargs['ARM'], ARMs) or "ARMs_name" in kwargs:
-            if not ARMs_name in self.__computers:
-                print("Can't attach kaspersky to computer because ARMs_name or ARM.name didn't found in self.__computers")
-                return None
-            ip = None
-            if kwargs['ip'] is not None:
-                ip = self.__addresses.get(kwargs['ip'])
-            if kwargs['os'] is not None:
-                os = self.__os.get(kwargs['os'])
-            check = self.__computers[ARMs_name].actual_kaspersky()
-            kasper = Kaspersky_Info(server=server,
-                                    agent_version=kwargs["agent_version"] if 'agent_version' in kwargs and kwargs['agent_version'] else None,
-                                    security_version=kwargs["security_version"] if 'security_version' in kwargs and kwargs['security_version'] else None,
-                                    hasDuplicate=kwargs["hasDuplicate"] if 'hasDuplicate' in kwargs and kwargs['hasDuplicate'] else False,
-                                    ARM=self.__computers[ARMs_name],
-                                    Address=ip,
-                                    Operation_System_name=os.name)
-            if check != kasper:
-                self.session.add(kasper)
-                self.session.commit()
-                return True
-        return False
 
     def update_dallas_status(self, ARMs_name, server, type_code):
         if not ARMs_name in self.__computers:

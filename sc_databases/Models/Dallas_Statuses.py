@@ -22,13 +22,7 @@ class Dallas_Statuses(BaseModel):
     TYPE_ERROR = 6
     TYPE_CRITICAL_ERROR = 9
     TYPE_UNKNOWN_ERROR = 37
-    TYPES = {
-        "4": TYPE_INSTALLED_ON,
-        "5": TYPE_INSTALLED_OFF,
-        "6": TYPE_ERROR,
-        "9": TYPE_CRITICAL_ERROR,
-        "37": TYPE_UNKNOWN_ERROR
-    }
+    TYPES = [TYPE_INSTALLED_ON, TYPE_INSTALLED_OFF, TYPE_ERROR, TYPE_CRITICAL_ERROR, TYPE_UNKNOWN_ERROR]
 
     def __eq__(self, other):
         if isinstance(other, Dallas_Statuses):

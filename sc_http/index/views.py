@@ -5,7 +5,6 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from sc_http.common.functions import tangle_session
 from sc_http.index.forms import RegisterForm, LoginForm
 from sc_http.common.decorators import requires_auth, requires_unauth
-from sc_databases import db as database
 
 mod = Blueprint('index', __name__, url_prefix='/')
 

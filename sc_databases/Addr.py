@@ -1,7 +1,6 @@
 import ipaddress
 import os
 
-from sc_cus import CryptoGateway
 from sc_databases.Database import DatabaseClass
 from sc_databases.Models.Addresses import Addresses
 from sc_databases.Models.Crypto_Gateways import Crypto_Gateways
@@ -14,9 +13,10 @@ class Addr:
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Addr, cls).__new__(cls)
+            cls.instance.init()
         return cls.instance
 
-    def __init__(self):
+    def init(self):
         self.db = DatabaseClass()
         self.session = self.db.session
         self.__crypto_gateways = self.__load_crypto_gateways()
@@ -51,12 +51,14 @@ class Addr:
                     self.__crypto_gateways[name].active_to_block =  active_to_block
                     self.__crypto_gateways[name].structure = structure
                 else:
-                    self.session.add(Crypto_Gateways(name=name,
-                                                         address=address,
-                                                         mask=mask,
-                                                         caption=caption,
-                                                         active_to_block=active_to_block,
-                                                         structure=structure))
+                    cg = Crypto_Gateways(name=name,
+                                         address=address,
+                                         mask=mask,
+                                         caption=caption,
+                                         active_to_block=active_to_block,
+                                         structure=structure)
+                    self.session.add(cg)
+                    self.__crypto_gateways[name] = cg
                 self.session.commit()
             return { row.name: row for row in self.session.query(Crypto_Gateways).all() }
         else:
@@ -124,4 +126,18 @@ class Addr:
                 self.session.commit()
                 self.__addresses[ip] = addr
                 return self.__addresses[ip]
-        return None
+
+    @staticmethod
+    def GET(ip=None):
+        if not ip:
+            return Addr().__addresses
+        else:
+            addr = DatabaseClass().session.query(Addresses).filter_by(ip=ip).first()
+            if addr:
+                return addr
+            else:
+                addr = Addresses(ip=ip)
+                DatabaseClass().session.add(addr)
+                DatabaseClass().session.commit()
+                Addr().__addresses[ip] = addr
+                return Addr().__addresses[ip]

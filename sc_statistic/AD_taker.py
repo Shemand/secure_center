@@ -33,10 +33,12 @@ class ActiveDirectory:
         self.__structures = self.__init_structures()
         self.__extract_data()
         self.build_structure(self.__raw_struct)
+        computers = self.__computers.get()
+        for computername in computers:
+            if not computername in self.__raw_data:
+                computers[computername].isDeleted = datetime.now()
         for computername in self.__raw_data:
             if not self.__computers.get(computername):
-                if not 'root_catalog' in self.__raw_data[computername]:
-                    print('ffff')
                 self.__computers.add(computername, Structures_name = self.__raw_data[computername]['root_catalog']
                                                  , registred_ad = self.__raw_data[computername]['date_in_domain']
                                                  , last_visible = self.__raw_data[computername]['last_visible'])
@@ -46,6 +48,8 @@ class ActiveDirectory:
                     computer.registred_ad = self.__raw_data[computername]['date_in_domain']
                 if computer.last_visible != self.__raw_data[computername]['last_visible']:
                     computer.update_last_visible(self.__raw_data[computername]['last_visible'])
+                if computer.isActive == self.__raw_data[computername]['isDisabled']:
+                    computer.isActive = not self.__raw_data[computername]['isDisabled']
                 structure_id = self.db.session.query(Structures).filter_by(name=self.__raw_data[computername]['root_catalog']).one().id
                 if computer.Structures_id != structure_id:
                     computer.Structures_id = structure_id
@@ -80,6 +84,8 @@ class ActiveDirectory:
                 "location": tmp,
                 "created": cn['attributes']['whenCreated'],
                 "user_account_control": cn['attributes']['userAccountControl'],
+                "isLocked" : True if cn['attributes']['userAccountControl'] & 0x10 else False,
+                "isDisabled" : True if cn['attributes']['userAccountControl'] & 0x2 else False,
                 "logon_count" : cn['attributes']['logonCount'] if 'logonCount' in cn['attributes'] else None,
                 "last_visible": cn['attributes']['lastLogonTimestamp'].replace(tzinfo=None) if 'lastLogonTimestamp' in cn['attributes'] and cn['attributes']['lastLogonTimestamp'].replace(tzinfo=None) <= datetime.now() else None
             })
@@ -148,6 +154,8 @@ class ActiveDirectory:
                     self.__raw_data[computer_name]['last_visible'] = record['last_visible']
                     self.__raw_data[computer_name]['logon_count'] = record['logon_count']
                     self.__raw_data[computer_name]['ad_user_control'] = record['user_account_control']
+                    self.__raw_data[computer_name]['isLocked'] = record['isLocked']
+                    self.__raw_data[computer_name]['isDisabled'] = record['isDisabled']
                     end_flag = True
                 if write_flag:
                     if loc in self.ignore_list:

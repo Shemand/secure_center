@@ -1,7 +1,5 @@
 import ipaddress
-import os
 
-from sc_cus import CryptoGateway
 from sc_databases.Database import DatabaseClass
 from sc_databases.Models.Addresses import Addresses
 from sc_databases.Models.Crypto_Gateways import Crypto_Gateways
@@ -35,3 +33,18 @@ class OS:
                 self.session.commit()
                 self.__os_names[name] = os
                 return self.__os_names[name]
+
+    @staticmethod
+    def GET(name=None):
+        if not name:
+            return OS().__os_names
+        else:
+            os = DatabaseClass().session.query(Operation_System).filter_by(name=name).first()
+            if os:
+                return os
+            else:
+                os = Operation_System(name=name, isUnix=True if name.lower().find('win') == -1 else False)
+                DatabaseClass().session.add(os)
+                DatabaseClass().session.commit()
+                OS().__os_names[name] = os
+                return OS().__os_names[name]

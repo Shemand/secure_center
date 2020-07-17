@@ -2,9 +2,6 @@ from datetime import datetime
 
 from sqlalchemy import select, update
 
-from sc_cus import cryptoGateways as CG, load_crypto_gateways
-from sc_databases import db as database
-
 
 def __attach_AD(_computer, _row):
     if _computer.isAD():
