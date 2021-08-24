@@ -1,6 +1,7 @@
 import sys
 import threading
 
+from sc_cus import cryptoGateways as CG, load_crypto_gateways, CryptoGateways
 from sc_statistic.updaters import update_database
 from sc_statistic.kaspersky_taker import KSC
 from sc_statistic.AD_taker import ActiveDirectory
@@ -8,6 +9,9 @@ from sc_statistic.Config import config
 from sc_databases.LinuxDatabase import LinuxComputers
 from sc_databases.WindowsDatabase import WindowsComputers
 from sc_statistic.Dallas_taker import DallasServer
+from sc_cus import cryptoGateways as CG
+
+from sc_databases import db as database
 
 
 def linux_taker(_computers):
@@ -83,7 +87,7 @@ def update_statistics():
         try:
             print("Begin take computers from Active Directory")
             database.Logs.add_update_logs("Begin take computers from Active Directory.")
-            AD = ActiveDirectory("ou=SZO,ou=FSVNG,dc=rosgvard,dc=ru")
+            AD = ActiveDirectory(config.active_directory_main_container_path)
         except Exception:
             print("Take data from Active Directory was ended with error.")
             database.Logs.add_update_logs("Take data from Active Directory was ended with error.")
@@ -97,32 +101,33 @@ def update_statistics():
             database.Logs.add_update_logs("Begin take computers from Dallas Servers")
             DS = []
             try:
-                dallas_paths = ["/home/shemand/PycharmProjects/ff/dallas-001.txt",
-                                "/home/shemand/PycharmProjects/ff/dallas-002.txt",
-                                "/home/shemand/PycharmProjects/ff/dallas-vch.txt",
-                                "/home/shemand/PycharmProjects/ff/dallas-TERO.txt"]
+                dallas_paths = config.dallas_paths
                 for path in dallas_paths:
                     DS.append(DallasServer(path))
                 for ds in DS:
                     ds.taker(computers)
-            except Exception:
+            except Exception as x:
+                print(x)
                 print("Take data from DallasLock file was ended with error.")
                 database.Logs.add_update_logs("Take data from DallasLock file was ended with error.")
                 database.isUpdating = False
             else:
                 try:
-                    print("Begin take info from puppet")
-                    database.Logs.add_update_logs("Begin take info from puppet.")
-                    linux_taker(computers)
+                    if config.flag_get_from_linux_db:
+                        print("Begin take info from puppet")
+                        database.Logs.add_update_logs("Begin take info from puppet.")
+                        linux_taker(computers)
                 except Exception:
                     print("Take data from puppet file was ended with error.")
                     database.Logs.add_update_logs("Take data from puppet DB was ended with error.")
                     database.isUpdating = False
+                    pass
                 else:
                     try:
-                        print("Begin take info from windows")
-                        database.Logs.add_update_logs("Begin take info from windows.")
-                        windows_taker(computers)
+                        if config.flag_get_from_windows_db:
+                            print("Begin take info from windows")
+                            database.Logs.add_update_logs("Begin take info from windows.")
+                            windows_taker(computers)
                     except Exception:
                         print("Take data from WinDB file was ended with error.")
                         database.Logs.add_update_logs("Take data from WinDB was ended with error.")

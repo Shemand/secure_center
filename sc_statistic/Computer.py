@@ -1,15 +1,23 @@
 from datetime import date, datetime
-
+from sc_statistic.Config import config
 
 class Computer:
+
+    KASPERKSY_VERSIONS = {
+        'WIN_AGENT' : config.kaspersky_win_agent_versions,
+        'LIN_AGENT': config.kaspersky_linux_agent_versions,
+        'WIN_SECURITY': config.kaspersky_win_security_versions,
+        'LIN_SECURITY': config.kaspersky_linux_security_versions
+    }
+
     def __init__(self, _name="", _dallas_server=None, _root_catalog="",
-                 _date_in_domain=None, _last_logon_puppet=None,
+                 _date_in_domain=None, _last_logon_puppet=None, _isActive=False,
                  _last_logon_windows=None, _type=0, _ad_user_control=None, _crypto_gateway_name=None,
                  _last_logon_ad=None, _last_logon_kaspersky=None, _last_logon_local=None,
                  _logon_count=None, _dallas_status=None, _local_os=None,
-                 _kl_ksc_server=None, _kl_ip=None, _kl_os=None, _kl_status=None, _kl_hasDuplicate=False,
+                 _kl_ksc_server=None, _kl_last_visible=None, _kl_ip=None, _kl_os=None, _kl_status=None, _kl_hasDuplicate=False,
                  _kl_agent_version=None, _kl_security_version=None, _kl_for_server_version=None,
-                 _kl_ksc_version=None, _kl_info_updated=False):
+                 _kl_ksc_version=None, _kl_info_updated=False, _kl_info_is_not_found=False):
         self.date_in_domain = _date_in_domain
         self.ad_user_control = _ad_user_control
         self.logon_count = _logon_count
@@ -20,6 +28,7 @@ class Computer:
         self.dallas_status = _dallas_status
         self.local_os = _local_os
         self.crypto_gateway_name = _crypto_gateway_name
+        self.isActive = _isActive
 
         self.last_logon_ad = _last_logon_ad
         self.last_logon_puppet = _last_logon_puppet
@@ -28,6 +37,7 @@ class Computer:
         self.last_logon_local = _last_logon_local
 
         self.kl_ksc_server = _kl_ksc_server
+        self.kl_last_visible = _kl_last_visible
         self.kl_hasDuplicate = _kl_hasDuplicate
         self.kl_ip = _kl_ip
         self.kl_os = _kl_os
@@ -37,6 +47,7 @@ class Computer:
         self.kl_for_server_version = _kl_for_server_version
         self.kl_ksc_version = _kl_ksc_version
         self.kl_info_updated = _kl_info_updated
+        self.kl_info_is_not_found = _kl_info_is_not_found
 
     def set_dallas_server(self, _server_name):
         self.dallas_server = _server_name
@@ -86,6 +97,16 @@ class Computer:
 
     def get_os(self):
         os = 'unkw'
+        if self.isKaspersky():
+            if self.kl_agent_version in Computer.KASPERKSY_VERSIONS['WIN_AGENT']\
+               or self.kl_security_version in Computer.KASPERKSY_VERSIONS['WIN_SECURITY']:
+                os = 'wind'
+            elif self.kl_agent_version in Computer.KASPERKSY_VERSIONS['LIN_AGENT']\
+               or self.kl_security_version in Computer.KASPERKSY_VERSIONS['LIN_SECURITY']:
+                os = 'linx'
+            else:
+                os = self.kl_os
+            return os
         if self.last_logon_puppet or self.last_logon_windows\
                 or self.last_logon_local or self.last_logon_kaspersky:
             logons = ({"puppet": self.last_logon_puppet,
@@ -131,17 +152,23 @@ class Computer:
     def get_name(self):
         return self.name
 
+    # def get_last_logon(self):
+    #     sources = []
+    #     sources.append(self.last_logon_ad)
+    #     sources.append(self.last_logon_windows)
+    #     sources.append(self.last_logon_puppet)
+    #     sources.append(self.last_logon_kaspersky)
+    #     sources.append(self.last_logon_local)
+    #     sources = list(filter(None, sources))
+    #     if sources == []:
+    #         return None
+    #     return max(sources)
+
     def get_last_logon(self):
-        sources = []
-        sources.append(self.last_logon_ad)
-        sources.append(self.last_logon_windows)
-        sources.append(self.last_logon_puppet)
-        sources.append(self.last_logon_kaspersky)
-        sources.append(self.last_logon_local)
-        sources = list(filter(None, sources))
-        if sources == []:
-            return None
-        return max(sources)
+        if self.kl_last_visible is not None:
+            return self.kl_last_visible
+        return None
+
 
     def get_kl_info(self):
         dic = {

@@ -1,12 +1,81 @@
 {
-  "root" : "SZO",
-  "dallas_path" : [
-    "/home/shemand/projects/SC/dallas-001.txt",
-    "/home/shemand/projects/SC/dallas-002.txt",
-    "/home/shemand/projects/SC/dallas-vch.txt",
-    "/home/shemand/projects/SC/dallas-TERO.txt"
+  "database" : {
+    "database" : "secure_center",
+    "drivername" : "mysql",
+    "username" : "root",
+    "password" : "qwerty",
+    "host" : "localhost"
+  },
+
+  "flag_get_from_windows_db" : false,
+  "flag_get_from_linux_db" : false,
+
+  "active_directory_server_ip" : "10.3.128.4",
+  "active_directory_port" : 389,
+  "active_directory_login" : "rosgvard\\shemakovnd",
+  "active_directory_password" : "SHema98rg",
+  "active_directory_main_container_path" : "ou=SZO,ou=FSVNG,dc=rosgvard,dc=ru",
+  "active_directory_begin_node" : "SZO",
+  "active_directory_end_nodes" : ["2659", "3526", "3644", "3693", "3705", "3727", "3798", "5134", "5402", "5565", "6716",
+                                  "6717", "6821", "6832", "6944", "T210", "T211", "T229", "T235", "T239", "T251", "T253",
+                                  "T260", "T278", "T283", "upr", "upr-varshavskaya", "upr2"],
+
+  "kaspersky_login" : "ksc-szo-001",
+  "kaspersky_password" : "#00ktnCG<!!!",
+  "kaspersky_win_agent_versions" : ["11.0.0.1131", "10.5.1781", "10.4.343", "10.2.434"],
+  "kaspersky_win_security_versions" : ["11.1.1.126","11.1.0.15919","11.0.1.90","11.0.0.6499","10.3.3.275","10.1.2.996","10.3.0.6294","11.2.0.2254","10.2.6.3733","11.3.0.773", "6.0.4.1611", "10.1.0.867", "10.2.1.23","2.2.0.605", "10.2.5.3201", "11.4.0.233"],
+  "kaspersky_linux_agent_versions" : ["11.0.0.29", "10.5.0.42"],
+  "kaspersky_linux_security_versions" : ["10.1.1.6421","10.1.0.6077", "10.1.0.6028"],
+  "kaspersky_right_agent_versions" : ["11.0.0.29", "11.0.0.1131", "11.0.0.1131"],
+  "kaspersky_right_security_versions" : ["10.1.1.6421", "11.1.1.126", "10.1.2.996", "11.0.0.1131"],
+  "kaspersky_servers_urls" : {
+    "2659" : "https://10.3.130.4:13299",
+    "3526" : "https://10.3.132.7:13299",
+    "3644" : "https://10.3.138.132:13299",
+    "3693" : "https://10.3.139.182:13299",
+    "3705" : "https://11.196.4.140:13299",
+    "3798" : "https://10.3.138.87:13299",
+    "5134" : "https://10.3.137.7:13299",
+    "6716" : "https://10.3.134.250:13299",
+    "6717" : "https://11.196.3.130:13299",
+    "6821" : "https://10.3.133.132:13299",
+    "6832" : "https://10.3.136.6:13299",
+    "6944" : "https://10.3.131.73:13299",
+    "T210" : "https://10.222.110.187:13299",
+    "T211" : "https://10.222.111.240:13299",
+    "T229" : "https://10.222.129.98:13299",
+    "T235" : "https://10.222.135.106:13299",
+    "T239" : "https://10.222.139.247:13299",
+    "T251" : "https://10.222.151.201:13299",
+    "T253" : "https://10.222.153.8:13299",
+    "T278" : "https://10.222.198.4:13299",
+    "UVO"  : "https://10.222.235.200:13299",
+    "T283" : "https://10.222.183.3:13299",
+    "T260" : "https://10.222.60.8:13299",
+    "6931" : "https://10.3.141.4:13299",
+    "SZO"  : "https://10.3.128.23:13299",
+    "SZO_new" : "https://10.3.128.28:13299",
+    "5402_new" : "https://10.3.140.77:13299",
+    "T251_new" : "https://11.198.152.172:13299"
+  },
+
+  "source_crypto_gateways_file" : "crypto_gateways.txt",
+
+  "control_statistics_root_node" : "SZO",
+  "control_statistics_end_nodes" : ["2659", "3526", "3644", "3693", "3705", "3727", "3798", "5134", "5402", "5565", "6716",
+                                    "6717", "6821", "6832", "6944", "T210", "T211", "T229", "T235", "T239", "T251", "T253",
+                                    "T260", "T278", "T283", "upr"],
+
+  "time_to_updates_statistics" : ["05:55", "08:55", "11:55", "14:55", "17:55", "20:55"],
+  "time_to_uploads_ip_list" : ["09:00", "18:00"],
+
+  "dallas_paths" : [
+    "/home/shemand/projects/secure_center/dallas-001.txt",
+    "/home/shemand/projects/secure_center/dallas-002.txt",
+    "/home/shemand/projects/secure_center/dallas-vch.txt",
+    "/home/shemand/projects/secure_center/dallas-TERO.txt"
   ],
-  "ignore_containers": ["6899", "6931"],
+
   "locations" : [
     {
       "name" : "2659",

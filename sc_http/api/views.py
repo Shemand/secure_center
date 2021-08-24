@@ -1,21 +1,42 @@
 import json
+import os
 import threading
+from collections import OrderedDict
 from datetime import datetime
 
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, session, request, send_from_directory
+from flask_cors import cross_origin
+from sqlalchemy import desc, select
 
+from sc_cus.upload_list import upload_list
 from sc_http.common.functions import tangle_session, get_computers_by_root, computer_isAccess, device_isAccess
 from sc_http.common.decorators import requires_auth, requires_be_admin
+from sc_databases import db as database
 from sc_statistic import update_statistics as upd_stat
+from sc_statistic.control_statistics import ControlStatistics
 
+stat = ControlStatistics()
 mod = Blueprint('api', __name__, url_prefix='/api/')
 
 @mod.before_request
 def before_request():
     tangle_session()
 
+@mod.route('/statistics/', methods=['GET'])
+@requires_auth
+def get_statistics():
+    data = stat.get(last_only=True)
+    return json.dumps(data)
+
+@mod.route('/statistics/id/<id>', methods=['GET'])
+@requires_auth
+def get_statistics_by_id(id):
+    data = stat.get(id=id)
+    return json.dumps(data)
+
 @mod.route('/get_computers/', methods=["GET"])
 @requires_auth
+@cross_origin()
 def get_computers():
     computers = []
     user = database.Users.get_by_id(session['user_id'])
@@ -41,6 +62,7 @@ def get_computers():
             "kl_ip" : computer['kl_ip'] if computer['kl_ip'] else "Неизвестно",
             "isLocked" : True if computer['isLocked'] else False,
             "isBlocking" : True if computer['activeToBlock'] else False,
+            "isActive" : True if computer['isActive'] else False,
             "hasDuplicate" : True if computer['hasDuplicate'] else False,
             "os" : "Windows" if computer['os'] == "wind" else "Linux" if computer['os'] == "linx" else "Неизвестно",
             "dallas_server" : computer['dallas_server'] if computer['dallas_server'] else "Отсутствует",
@@ -179,6 +201,13 @@ def update_statistic():
     database.Logs.add_update_logs("Imposable update statistics, because updating already in progress.")
     return '{ "status" : "bad", "message" : "update in progress" }'
 
+@mod.route('/make_snapshot', methods=['POST'])
+@requires_auth
+@requires_be_admin
+def make_snapshot():
+    stat.create_upload()
+    return '{ "status" : "ok", "message" : "data was updated" }'
+
 @mod.route('/update_logs', methods=['GET'])
 @requires_auth
 @requires_be_admin
@@ -238,12 +267,15 @@ def get_crypto_gateways():
         units = database.Structures.get_by_root_id(user['Structures_id_access'])
         units.append(user['Structures_id_access'])
         if units:
-            crypto_gateways = []
+            crypto_gateways = {}
             for unit in units:
                 gateways = database.CryptoGateways.get_by_structure_id(unit)
                 for gateway in gateways:
-                    crypto_gateways.append(gateway['name'])
-            return jsonify(crypto_gateways)
+                    crypto_gateways[ gateway['name'] ] = gateway['caption']
+                sorted_crypto_gateways = OrderedDict()
+                for key in sorted(crypto_gateways):
+                    sorted_crypto_gateways[key] = crypto_gateways[key]
+            return jsonify(sorted_crypto_gateways)
     return jsonify([])
 
 @mod.route('/available/ip/crypto_gateway/<crypto_gateway>', methods=['GET'])
@@ -254,3 +286,27 @@ def get_ip_by_crypto_gateways(crypto_gateway):
         if database.CryptoGateways.isAccess_by_structure(crypto_gateway, user['Structures_id_access']):
             return jsonify(database.Addresses.get_by_CG(crypto_gateway, free=True))
     return '{}'
+
+@mod.route('/snapshot/dates', methods=['GET'])
+@requires_auth
+@requires_be_admin
+def get_dates_of_snapshots():
+    query = select([database.tStatistics.c.number_of_update, database.tStatistics.c.created]).group_by(database.tStatistics.c.number_of_update).order_by(desc(database.tStatistics.c.number_of_update)).limit(90)
+    snapshots = database.engine.execute(query).fetchall()
+    response = []
+    for snapshot in snapshots:
+        response.append(dict(snapshot))
+    return jsonify(response)
+
+@mod.route('/cus/upload_list', methods=['GET'])
+@requires_auth
+@requires_be_admin
+def upload_blocklist():
+    upload_list()
+    return send_from_directory(os.getcwd(), 'block.txt')
+
+@mod.route('/cus/download_cg', methods=['GET'])
+@requires_auth
+@requires_be_admin
+def download_cg_list():
+    return send_from_directory(os.getcwd(), 'crypto_gateways.txt')

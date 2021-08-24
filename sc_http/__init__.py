@@ -2,11 +2,13 @@ import os
 import sys
 
 from flask import Flask, session, redirect, url_for
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 sys.path.append("/home/shemand/PycharmProjects/ff/sc_http")
 
 app = Flask(__name__, static_folder='templates/static')
+CORS(app)
 app.config.from_object('config')
 
 db = SQLAlchemy(app)

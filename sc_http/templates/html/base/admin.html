@@ -6,13 +6,14 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Dashboard Template · Bootstrap</title>
+    <title>{% block title %}SC - Панель администратора{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/bootstrap-reboot.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/bootstrap-grid.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/css/tabulator.min.css') }}">
 
     <style>
       .bd-placeholder-img {
@@ -61,12 +62,17 @@
                 <a class="nav-link" href="{{ url_for('devices.index') }}"><b>Устройства</b></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="#"><b>Управление</b></a>
+                <a class="nav-link active" href="{{ url_for('admin.index') }}"><b>Управление</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('admin.statistics') }}"><b>Статистика</b></a>
               </li>
             </ul>
           </div>
         </nav>
-
+        <script src="{{ url_for('static', filename='libs/js/jquery-3.5.1.slim.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/js/bootstrap.bundle.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/js/axios.min.js') }}"></script>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
           {% block content %}
           {% endblock %}
@@ -74,8 +80,4 @@
       </div>
     </div>
   </body>
-  <script src="{{ url_for('static', filename='libs/js/jquery-3.5.1.slim.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='libs/js/bootstrap.bundle.js') }}"></script>
-  <script src="{{ url_for('static', filename='libs/js/axios.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 </html>

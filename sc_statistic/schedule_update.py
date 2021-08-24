@@ -7,6 +7,7 @@ import schedule as schedule
 from sc_cus.upload_list import upload_list
 from sc_statistic import update_statistics
 from sc_statistic.AD_taker import  ActiveDirectory
+from sc_statistic.Config import config
 
 class Schedule_Update(Thread):
 
@@ -18,7 +19,8 @@ class Schedule_Update(Thread):
 
     def __init__(self):
         Thread.__init__(self)
-        self.AD = ActiveDirectory("ou=SZO,ou=FSVNG,dc=rosgvard,dc=ru")
+
+        self.AD = ActiveDirectory(config.active_directory_main_container_path)
         self.computer_count = 0
         if self.thread_isActive == False:
             self.start()
@@ -41,9 +43,19 @@ class Schedule_Update(Thread):
                         thd.start()
                         self.computer_count = cnt
 
-            times = ['05:55', '08:55', '11:55', '14:55', '17:55', '20:55']
+            def fixed_update():
+                cnt = self.AD.get_computers_count()
+                thd = Thread(target=update_statistics)
+                thd.start()
+                self.computer_count = cnt
+
+            times = config.time_to_uploads_ip_list
             for t in times:
                 schedule.every().day.at(t).do(upload)
+
+            times = config.time_to_updates_statistics
+            for t in times:
+                schedule.every().day.at(t).do(fixed_update)
 
             schedule.every(5).minutes.do(check_ad)
             while True:

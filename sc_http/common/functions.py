@@ -1,4 +1,5 @@
 from flask import g, session
+from sc_databases import db as database
 from sc_http.common.decorators import requires_auth
 
 

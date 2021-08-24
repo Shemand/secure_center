@@ -1,10 +1,22 @@
 {% extends "html/base/main.html" %}
+{% block title %}SC - Компьютеры{% endblock %}
 {% block content %}
 <div class="container-fluid center_block">
+    <h2 style="color: green">Внимание! Информация по Операционной системе теперь актуальна. Данные по Dallas обновляются ежедневно ~9:00.</h2>
      <div class="row">
          <div class="col-sm-10">
                 <div id="macroses_block" hidden>
-                    <input type="button" value="Без агента касперского" id="mc_without_agent"><input type="button" value="Без защиты касперского" id="mc_without_security"><input type="button" value="Без Dallas Lock" id="mc_without_dl"><input type="button" value="Проблемный Dallas Lock" id="mc_problems_dl"><input type="button" value="Проблемный касперский" id="mc_problems_kl"><input type="button" value="Не в домене" id="mc_without_domain">
+                    <input class="btn btn-outline-success" type="button" value="Без агента" id="mc_without_agent">
+                    <input class="btn btn-outline-success" type="button" value="Без защиты" id="mc_without_security">
+                    <input class="btn btn-outline-success" type="button" value="Неправильный агент" id="mc_wrong_agent">
+                    <input class="btn btn-outline-success" type="button" value="Неправильная защита" id="mc_wrong_security">
+                    <input class="btn btn-outline-success" type="button" value="Проблемный касперский" id="mc_problems_kl">
+                    <span>               </span>
+                    <input class="btn btn-outline-primary" type="button" value="Без Dallas Lock" id="mc_without_dl">
+                    <input class="btn btn-outline-primary" type="button" value="Проблемный Dallas Lock" id="mc_problems_dl">
+                    <span>                     </span>
+                    <input class="btn btn-outline-dark" type="button" value="Не в домене" id="mc_without_domain">
+                    <input class="btn btn-outline-dark" type="button" value="Активные компьютеры" id="mc_isActive">
                 </div>
                 <div id="filter_block" hidden>
                     <div id="DL_options">
@@ -24,7 +36,6 @@
                             <div class="opt"><input type="checkbox" value="" id="is_without_security"><label for="">Убрать машины без защиты Касперского</label></div>
                             <div class="opt"><input type="checkbox" value="" id="is_error_agent"><label for="">Убрать машины с не сертифицированной версией агента Касперского</label></div>
                             <div class="opt"><input type="checkbox" value="" id="is_error_security"><label for="">Убрать машины с не сертифицированной версией защиты Касперского</label></div>
-                            <div class="opt"><input type="checkbox" value="" id="is_check_version"><label for="">Включить проверку совпадения версий Агента и Защиты Касперского</label></div>
                         </div>
                     </div>
                     <div id="OS_options">
@@ -38,20 +49,20 @@
                         <div class="opt"><input type="checkbox" value="" id="is_inDomain"><label for="">Убрать машины в домене</label></div>
                         <div class="opt"><input type="checkbox" value="" id="is_notDomain"><label for="">Убрать машины не в домене</label></div>
                     </div>
-                    <div id="Logon_options">
-                        <span>Последние появляние в сети</span>
-                        <div class="opt"><input type="radio" id="is_LogMoreOff" name="LogMore" checked><label for="">Отключить проверку на "не логинились более..."</label></div>
-                        <div class="opt"><input type="radio" id="is_LogMore3m" name="LogMore"><label for="">Убрать машины, которые не логинились более 3 месяцев</label></div>
-                        <div class="opt"><input type="radio" id="is_LogMore2m" name="LogMore"><label for="">Убрать машины, которые не логинились более 2 месяцев</label></div>
-                        <div class="opt"><input type="radio" id="is_LogMore1m" name="LogMore"><label for="">Убрать машины, которые не логинились более месяца</label></div>
-                        <div class="opt"><input type="radio" id="is_LogLessOff" name="LogLess" checked><label for="">Отключить проверку на "логинились последние..."</label></div>
-                        <div class="opt"><input type="radio" id="is_LogLess3m" name="LogLess"><label for="">Убрать машины, которые логинились последние 3 месяца</label></div>
-                        <div class="opt"><input type="radio" id="is_LogLess2m" name="LogLess"><label for="">Убрать машины, которые логинились последние 2 месяца</label></div>
-                        <div class="opt"><input type="radio" id="is_LogLess1m" name="LogLess"><label for="">Убрать машины, которые логинились в течении месяца</label></div>
+                    <div id="computer_type">
+                        <span><b>Типы устройств</b></span>
+                        <div class="opt"><input type="radio" name="comp_types" checked id="is_all_computer_types"> Все типы компьютеров</input></div>
+                        <div class="opt"><input type="radio" name="comp_types" id="is_some_computer_types"> Определенные типы компьютеров</input></div>
+                        <div class="opt"><ul class="computer_types" style="list-style-type:none;">
+                            <li><input type="checkbox" id="is_computer_type_ARM"><lable>АРМ</lable></li>
+                            <li><input type="checkbox" id="is_computer_type_server"><lable>Сервер</lable></li>
+                        </ul></div>
                     </div>
                     <div id="Other_options">
                         <span>Прочее</span>
                         <div class="opt"><input type="checkbox" value="" id="is_klIP"><label for="">Убрать машины, без IP адреса</label></div>
+                        <div class="opt"><input type="checkbox" value="" id="is_Active"><label for="">Убрать заблокированные машины</label></div>
+                        <div class="opt"><input type="checkbox" value="" id="is_notActive"><label for="">Убрать разблокированные машины</label></div>
                     </div>
                     <div><input type="button" value="Применить фильтр" id="set_filter"></div>
                 </div>

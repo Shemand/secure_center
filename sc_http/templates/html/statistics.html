@@ -1,0 +1,112 @@
+{% extends "html/base/admin.html" %}
+{% block title %}SC - Панель администратора{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <br>
+    <br>
+    <div>
+        <select name="" id="snapshot_dates"></select><span>               </span><input class="btn btn-secondary" id="disable_all_columns" type="button" value="Отключить все колонки">
+    </div>
+    <br>
+    <table>
+        <tr>
+            <td>
+                <input checked name="rownum" class="model_columns_statistics" type="checkbox">
+                <label for="">Номер строки</label>
+            </td>
+            <td>
+                <input checked name="structure_name" class="model_columns_statistics" type="checkbox">
+                <label for="">Подразделение</label>
+            </td>
+            <td>
+                <input checked name="all" class="model_columns_statistics" type="checkbox">
+                <label for="">Компьютеров в домене</label>
+            </td>
+            <td>
+                <input checked name="quantity_of_disabled_computers" class="model_columns_statistics" type="checkbox">
+                <label for="">Учетных записей заблокированно</label>
+            </td>
+            <td>
+                <input checked name="quantity_ARMs" class="model_columns_statistics" type="checkbox">
+                <label for="">Кол-во АРМов</label>
+            </td>
+            <td>
+                <input checked name="quantity_servers" class="model_columns_statistics" type="checkbox">
+                <label for="">Кол-во серверов</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input checked name="kaspersky_right" class="model_columns_statistics" type="checkbox">
+                <label for="">С установленным агентом и защитой</label>
+            </td>
+            <td>
+                <input checked name="kaspersky_wrong" class="model_columns_statistics" type="checkbox">
+                <label for="">Без агента и защиты</label>
+            </td>
+            <td>
+                <input checked name="kaspersky_percent_right" class="model_columns_statistics" type="checkbox">
+                <label for="">% установки касперского</label>
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <input checked name="computers_on_windows" class="model_columns_statistics" type="checkbox">
+                    <label for="">Компьютеров на Windows</label>
+                </td>
+                <td>
+                    <input checked name="ARMs_on_windows" class="model_columns_statistics" type="checkbox">
+                    <label for="">АРМов на Windows</label>
+                </td>
+                <td>
+                    <input checked name="servers_on_windows" class="model_columns_statistics" type="checkbox">
+                    <label for="">Серверов на Windows</label>
+                </td>
+                <td>
+                    <input checked name="ARMs_with_dallas" class="model_columns_statistics" type="checkbox">
+                    <label for="">АРМ с Dallas Lock</label>
+                </td>
+                <td>
+                    <input checked name="ARMs_without_dallas" class="model_columns_statistics" type="checkbox">
+                    <label for="">АРМ c проблемой Dallas Lock</label>
+                </td>
+                <td>
+                    <input checked name="ARMs_without_dallas" class="model_columns_statistics" type="checkbox">
+                    <label for="">АРМ без Dallas Lock</label>
+                </td>
+                <td>
+                    <input checked name="dallas_percent_right" class="model_columns_statistics" type="checkbox">
+                    <label for="">% установки Dallas Lock</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input checked name="computers_on_linux" class="model_columns_statistics" type="checkbox">
+                    <label for="">Компьютеров на Linux</label>
+                </td>
+                <td>
+                    <input checked name="ARMs_on_linux" class="model_columns_statistics" type="checkbox">
+                    <label for="">АРМов на Linux</label>
+                </td>
+                <td>
+                    <input checked name="servers_on_linux" class="model_columns_statistics" type="checkbox">
+                    <label for="">Серверов на Linux</label>
+                </td>
+                <td>
+                    <input checked name="computers_on_puppet" class="model_columns_statistics" type="checkbox">
+                    <label for="">Компьютеров на puppet</label>
+                </td>
+                <td>
+                    <input checked name="puppet_percent_right" class="model_columns_statistics" type="checkbox">
+                    <label for="">% на puppet</label>
+                </td>
+            </tr>
+    </table>
+    <br>
+    <div id="statistics_table"></div>
+    <input type="button" id="download" value="Скачать таблицу в формате XLSX" class="btn btn-primary btn-lg">
+</div>
+<script src="{{ url_for('static', filename='libs/js/xlsx.full.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/js/tabulator.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/statistics.js') }}"></script>
+{% endblock %}

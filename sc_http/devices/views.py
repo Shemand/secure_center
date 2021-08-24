@@ -5,6 +5,7 @@ from flask import Blueprint, jsonify, session, request, render_template, g
 
 from sc_http.common.functions import tangle_session
 from sc_http.common.decorators import requires_auth, requires_be_admin
+from sc_databases import db as database
 
 mod = Blueprint('devices', __name__, url_prefix='/devices/')
 

@@ -31,9 +31,10 @@ axios({
 }).then(function(res) {
     gateways = res.data
     cg_input.innerHTML = ""
-    gateways.forEach(function(element){
-        cg_input.innerHTML = cg_input.innerHTML + '<option>' + element + '</option>'
-    });
+    console.log(gateways)
+    for (name in gateways) {
+        cg_input.innerHTML = cg_input.innerHTML + '<option value="' + name + '">' + name + ' | ' + gateways[name] + '</option>'
+    }
     onChangeCryptoGateway()
 })
 
@@ -110,12 +111,14 @@ axios({
         {title:"Тип устройства", field:"type", align : "center", editor:"select", editorParams:{values:{"1" : "Управляемый коммутатор",
                                                                                                         "2" : "Сетевой принтер",
                                                                                                         "3" : "IP камера",
-                                                                                                        "4" : "ИБП"}},
+                                                                                                        "4" : "ИБП",
+                                                                                                        "5" : "АРМ"}},
                                                                 formatter : function(cell) {
                                                                     if (cell.getValue() == 1) return "Управляемый коммутатор"
                                                                     if (cell.getValue() == 2) return "Сетевой принтер"
                                                                     if (cell.getValue() == 3) return "IP камера"
                                                                     if (cell.getValue() == 4) return "ИБП"
+                                                                    if (cell.getValue() == 5) return "АРМ"
                                                                 },
                                                                 cellEdited: function(cell){
                                                                     dataToSend = {};

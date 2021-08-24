@@ -6,14 +6,14 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = False
 
-ADMINS = frozenset(['email@rosgvard.ru'])
+ADMINS = frozenset(['email@email.ru'])
 SECRET_KEY = 'somekey'
 
 db_url = {
     'database': "login",
     'drivername': "mysql",
-    'username': "root",
-    'password': "qwerty",
+    'username': "username",
+    'password': "password",
     'host': "localhost",
     'query': {'charset': 'utf8'}
 }

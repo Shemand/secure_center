@@ -19,7 +19,6 @@ let isWithoutAgent = document.getElementById("is_without_agent");
 let isWithoutSecurity = document.getElementById("is_without_security");
 let isErrorAgent = document.getElementById("is_error_agent");
 let isErrorSecurity = document.getElementById("is_error_security");
-let isCheckVersion = document.getElementById("is_check_version");
 
 let isWindows = document.getElementById("is_windows");
 let isLinux = document.getElementById("is_linux");
@@ -28,17 +27,14 @@ let isUnknown = document.getElementById("is_unknown");
 is_inDomain = document.getElementById("is_inDomain");
 is_notDomain = document.getElementById("is_notDomain");
 
-
-is_LogMoreOff = document.getElementById("is_LogMoreOff");
-is_LogMore3m = document.getElementById("is_LogMore3m");
-is_LogMore2m = document.getElementById("is_LogMore2m");
-is_LogMore1m = document.getElementById("is_LogMore1m");
-is_LogLessOff = document.getElementById("is_LogLessOff");
-is_LogLess3m = document.getElementById("is_LogLess3m");
-is_LogLess2m = document.getElementById("is_LogLess2m");
-is_LogLess1m = document.getElementById("is_LogLess1m");
-
 is_klIP = document.getElementById("is_klIP");
+is_Active = document.getElementById('is_Active');
+is_notActive = document.getElementById('is_notActive');
+
+is_all_computer_types = document.getElementById('is_all_computer_types')
+is_some_computer_types = document.getElementById('is_some_computer_types')
+is_computer_type_ARM = document.getElementById('is_computer_type_ARM')
+is_computer_type_server = document.getElementById('is_computer_type_server')
 
 let table_control_panel = document.getElementById("control_panel");
 let open_filters_button = document.getElementById("open_filters");
@@ -49,18 +45,21 @@ let macroses_block = document.getElementById("macroses_block");
 
 let mc_without_agent = document.getElementById("mc_without_agent");
 let mc_without_security = document.getElementById("mc_without_security");
+let mc_wrong_agent = document.getElementById("mc_wrong_agent");
+let mc_wrong_security = document.getElementById("mc_wrong_security");
+let mc_problems_kl = document.getElementById("mc_problems_kl");
 let mc_without_dl = document.getElementById("mc_without_dl");
 let mc_problems_dl = document.getElementById("mc_problems_dl");
-let mc_problems_kl = document.getElementById("mc_problems_kl");
 let mc_without_domain = document.getElementById("mc_without_domain");
+let mc_isActive = document.getElementById("mc_isActive");
 
 let outer_last_updated = document.getElementById("outer_last_updated");
 let inner_last_updated = document.getElementById("inner_last_updated");
 
 let download_button = document.getElementById("download");
 
-let good_agent_versions = ['10.5.1781', '11.0.0.29', '10.1.1.6421']
-let good_security_versions = ['11.1.1.126', '10.1.1.6421']
+let good_agent_versions = ['11.0.0.29','11.0.0.1131','11.0.0.1131']
+let good_security_versions = ['10.1.1.6421','11.1.1.126','10.1.2.996','11.0.0.1131']
 
 user_isAdmin = undefined
 axios({method:"GET", url:"api/user/isadmin", withCredentials:true}).then(function(res) {
@@ -146,9 +145,7 @@ function updateFilterStatus() {
         dallas : [],
         kaspersky : [],
         os : [],
-        domain : [],
-        logMore : [],
-        logLess : []
+        domain : []
     };
     if(isGoodDL.checked)
         status_info.dallas.push("Установлен Dallas Lock");
@@ -169,8 +166,6 @@ function updateFilterStatus() {
         status_info.kaspersky.push("Установлена не правильная версия агента Касперского");
     if(isErrorSecurity.checked)
         status_info.kaspersky.push("Установленна неправильная версия защиты Касперского");
-    if(isCheckVersion.checked)
-        status_info.kaspersky.push("Включена проверка проверка соотношения версии защиты и агента");
     if(is_klIP.checked)
         status_info.kaspersky.push("Машины, без IP адреса касперского");
 
@@ -186,21 +181,16 @@ function updateFilterStatus() {
     if(is_notDomain.checked)
         status_info.domain.push("Машины, не подключенные к домену");
 
-    if(!is_LogMoreOff.checked){
-        if(is_LogMore3m.checked)
-            status_info.logMore.push("Машины, которые не появлялись в сети более 3 месяцев");
-        if(is_LogMore2m.checked)
-            status_info.logMore.push("Машины, которые не появлялись в сети более 2 месяцев");
-        if(is_LogMore1m.checked)
-            status_info.logMore.push("Машины, которые не появлялись в сети более месяца");
-    }
-    if(!is_LogMoreOff.checked){
-        if(is_LogLess3m.checked)
-            status_info.logLess.push("Машины, которые появлялись в сети последние 3 месяца");
-        if(is_LogLess2m.checked)
-            status_info.logLess.push("Машины, которые появлялись в сети последние 2 месяца");
-        if(is_LogLess1m.checked)
-            status_info.logLess.push("Машины, которые появлялись в сети последний месяц ");
+    if(is_Active.checked)
+        status_info.domain.push("Исключить машины не активные");
+    if(is_notActive.checked)
+        status_info.domain.push("Исключить активные машины");
+
+    if(is_some_computer_types.checked){
+        if(is_computer_type_ARM.checked)
+            status_info.os.push("Машины, тип которых - АРМ");
+        if(is_computer_type_server.checked)
+            status_info.os.push("Машины, тип которых - сервер");
     }
 
     end_string = "";
@@ -217,8 +207,6 @@ function updateFilterStatus() {
     draw_status(status_info.kaspersky);
     draw_status(status_info.os);
     draw_status(status_info.domain);
-    draw_status(status_info.logMore);
-    draw_status(status_info.logLess);
     if (filter_count)
         document.getElementById('filter_status').innerHTML = end_string;
     else
@@ -231,7 +219,13 @@ function updateFilterStatus() {
     else
         filter_status_bar.value = "Активно 0 фильтров";
 }
-
+axios({
+    url
+    method
+    withCredentials
+    headers
+}).then(function() {
+});
 axios({
     method : 'GET',
     url : 'api/get_computers/',
@@ -269,6 +263,7 @@ axios({
             }
             return cell.getValue();
         }},
+        {title:"Активен в AD", field:"isActive", align:"center", formatter:"tickCross", width: 50},
         {title:"Dallas Lock", field:"dallas", editor: false, align:"center", formatter:function(cell) {
             if( cell.getValue() == "Отсутствует") {
                 cell.getElement().style.backgroundColor = '#FCE4EC';
@@ -293,7 +288,9 @@ axios({
         }},
         {title:"Защита Касперского", field:"kl_security", align:"center", editor:false, formatter:function(cell){
             if( cell.getValue() == good_security_versions[0] ||
-                cell.getValue() == good_security_versions[1] ){
+                cell.getValue() == good_security_versions[1] ||
+                cell.getValue() == good_security_versions[2] ||
+                cell.getValue() == good_security_versions[3] ){
                 cell.getElement().style.backgroundColor = '#DCEDC8';
             } else if (cell.getValue() == "Отсутствует") {
                 cell.getElement().style.backgroundColor = '#FCE4EC';
@@ -432,6 +429,8 @@ axios({
         if (isGoodSecurity.checked){
             filters.push({ field : 'kl_security', type : '!=', value : good_security_versions[0]});
             filters.push({ field : 'kl_security', type : '!=', value : good_security_versions[1]});
+            filters.push({ field : 'kl_security', type : '!=', value : good_security_versions[2]});
+            filters.push({ field : 'kl_security', type : '!=', value : good_security_versions[3]});
         }
         if (isWithoutSecurity.checked) {
             filters.push({ field : 'kl_security', type : '!=', value : "Отсутствует" });
@@ -440,13 +439,10 @@ axios({
             subFilters = []
             subFilters.push({ field : 'kl_security', type : '=', value : good_security_versions[0] });
             subFilters.push({ field : 'kl_security', type : '=', value : good_security_versions[1] });
+            subFilters.push({ field : 'kl_security', type : '=', value : good_security_versions[2] });
+            subFilters.push({ field : 'kl_security', type : '=', value : good_security_versions[3] });
             subFilters.push({ field : 'kl_security', type : '=', value : "Отсутствует" });
             filters.push(subFilters)
-        }
-
-        // filter by relations
-        if (isCheckVersion.checked){
-
         }
 
         if (is_inDomain.checked) {
@@ -457,36 +453,19 @@ axios({
             filters.push({ field : 'ad', type : '!=', value : "Не зарегистрирован"});
         }
 
-        if (!is_LogMoreOff.checked) {
-            let now = new Date()
-            if (is_LogMore3m.checked) {
-                now = now.setMonth(now.getMonth()-3)
-                now = new Date(now)
-            } else if (is_LogMore2m.checked) {
-                now = now.setMonth(now.getMonth()-2)
-                now = new Date(now)
-            } else if (is_LogMore1m.checked) {
-                now = now.setMonth(now.getMonth()-1)
-                now = new Date(now)
-            }
-            console.log(now.getFullYear() + "-" + (parseInt(now.getMonth())+1) + "-" + now.getDate());
-            filters.push({ field : 'loggined', type : '<', value : now.getFullYear() + "-" + (parseInt(now.getMonth())+1) + "-" + now.getDate() });
+        if (is_Active.checked) {
+            filters.push({ field : 'isActive', type : '=', value : true});
         }
 
-        if (!is_LogLessOff.checked) {
-            let now = new Date()
-            if (is_LogLess3m.checked) {
-                now = now.setMonth(now.getMonth()-3)
-                now = new Date(now)
-            } else if (is_LogLess2m.checked) {
-                now = now.setMonth(now.getMonth()-2)
-                now = new Date(now)
-            } else if (is_LogLess1m.checked) {
-                now = now.setMonth(now.getMonth()-1)
-                now = new Date(now)
-            }
-            console.log(now.getFullYear() + "-" + (parseInt(now.getMonth())+1) + "-" + now.getDate());
-            filters.push({ field : 'loggined', type : '>=', value : now.getFullYear() + "-" + (parseInt(now.getMonth())+1) + "-" + now.getDate() });
+        if (is_notActive.checked) {
+            filters.push({ field : 'isActive', type : '=', value : false});
+        }
+
+        if (is_some_computer_types.checked){
+            if (is_computer_type_ARM.checked)
+                filters.push({ field : 'type', type : '=', value : 1 })
+            if (is_computer_type_server.checked)
+                filters.push({ field : 'type', type : '=', value : 2 })
         }
 
         if (is_klIP.checked) {
@@ -510,7 +489,6 @@ axios({
         isWithoutSecurity.checked = false
         isErrorAgent.checked = false
         isErrorSecurity.checked = false
-        isCheckVersion.checked = false
         is_klIP = false;
 
         isWindows.checked = false
@@ -520,8 +498,13 @@ axios({
         is_inDomain.checked = false;
         is_notDomain.checked = false;
 
-        is_LogMoreOff.checked = true;
-        is_LogLessOff.checked = true;
+        is_Active.checked = false;
+        is_notActive.checked = false;
+
+        is_all_computer_types.checked = true;
+        is_some_computer_types.checked = false
+        is_computer_type_ARM.checked = false;
+        is_computer_type_server.checked = false;
     }
     clear_filter_button.addEventListener('click', function() {
         clearMarks();
@@ -562,6 +545,7 @@ axios({
         clearMarks();
         isGoodAgent.checked = true;
         isErrorAgent.checked = true;
+        is_Active.checked = true;
         filtration();
     });
 
@@ -569,6 +553,7 @@ axios({
         clearMarks();
         isGoodSecurity.checked = true;
         isErrorSecurity.checked = true;
+        is_Active.checked = true;
         filtration();
     });
 
@@ -578,13 +563,21 @@ axios({
         isWithoutAgent.checked = true;
         isGoodSecurity.checked = true;
         isWithoutSecurity.checked = true;
+        is_Active.checked = true;
         filtration();
     });
 
     mc_without_dl.addEventListener('click', function() {
         clearMarks();
         isGoodDL.checked = true;
-        isErrorDL.check = true;
+        isErrorDL.checked = true;
+        is_Active.checked = true;
+        is_some_computer_types.checked = true;
+        is_computer_type_ARM.disabled = false;
+        is_computer_type_server.disabled = false;
+        is_computer_type_ARM.checked = true;
+        isLinux.checked = true;
+        isUnknown.checked = true;
         filtration();
     });
 
@@ -598,6 +591,39 @@ axios({
         clearMarks();
         isGoodDL.checked = true;
         isWithoutDL.checked = true;
+        is_Active.checked = true;
+        console.log(is_computer_type_ARM)
+        console.log(is_computer_type_server)
+        is_computer_type_ARM.disabled = false
+        is_computer_type_server.disabled = false
+        is_some_computer_types.checked = true;
+        is_computer_type_ARM.checked = true;
+        isLinux.checked = true;
+        isUnknown.checked = true;
+        filtration();
+    });
+
+    mc_isActive.addEventListener('click', function() {
+        clearMarks();
+        is_notDomain.checked = true;
+        is_Active.checked = true;
+        filtration();
+    });
+
+    mc_wrong_agent.addEventListener('click', function(){
+        clearMarks();
+        is_Active.checked = true;
+        isGoodAgent.checked =true;
+        isWithoutAgent.checked =true;
+        isErrorSecurity.checked =true;
+        filtration();
+    });
+    mc_wrong_security.addEventListener('click', function() {
+        clearMarks();
+        is_Active.checked = true;
+        isGoodSecurity.checked =true;
+        isWithoutSecurity.checked =true;
+        isErrorAgent.checked =true;
         filtration();
     });
 
@@ -618,6 +644,19 @@ axios({
                                     + updated.getFullYear() + " "
                                     + (updated.getHours() > 9 ? '' : '0') + updated.getHours() + ":"
                                     + (updated.getMinutes() > 9 ? '' : '0') + updated.getMinutes();
-}).catch(function(err) {
-    console.log(err)
-})
+});
+
+function click_on_all_types(event){
+    is_computer_type_ARM.checked = false
+    is_computer_type_server.checked = false
+    is_computer_type_ARM.disabled = true
+    is_computer_type_server.disabled = true
+};
+is_all_computer_types.addEventListener('change', click_on_all_types);
+is_some_computer_types.addEventListener('change', function() {
+    is_computer_type_ARM.disabled = false
+    is_computer_type_server.disabled = false
+});
+
+is_all_computer_types.checked = true
+click_on_all_types()
