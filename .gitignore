@@ -8,3 +8,4 @@ crypto_gateways.txt
 block.txt
 .idea/
 *.pyc
+sc_http/templates/static/libs/*
